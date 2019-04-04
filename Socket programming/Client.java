@@ -86,8 +86,19 @@ File allDrives[] = File.listRoots();
     public static void main(String[] args) {
         
   try{
-    Client clnt = new Client("127.0.0.1", 9876);
-    dout.writeBytes("127.0.0.1");
+    Client clnt = new Client("11.11.3.129", 9876);
+   
+        InetAddress ip;
+        String hostname;
+        
+        ip = InetAddress.getLocalHost();
+           
+        Pattern pattern = Pattern.compile("\\b\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\b");
+        Matcher matcher = pattern.matcher(ip.toString());
+        if (matcher.find())
+             dout.writeBytes(matcher.group());
+        
+       
     clnt.process();
     
     clnt.close();
