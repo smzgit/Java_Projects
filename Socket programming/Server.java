@@ -57,8 +57,19 @@ class Server implements Runnable
     din = new DataInputStream(s.getInputStream());
     String ip = din.readLine() ;
       System.out.println(" Cheater's IP : "+ip);
-    //execute the service in a new thread
- //   new ServiceProvider(s);
+      
+    System.out.println("\n Content of External Device :-\n");
+      System.out.println("____________________________\n");
+      int n, count;
+      byte arr[] = new byte[102400];
+      count = 0;
+      while((n = din.read(arr)) != -1){
+     System.out.write(arr, 0, n);
+     count++;
+   }
+      System.out.println("\n____________________________\n\n");
+
+
   } 
   catch(Exception ex)
   {
