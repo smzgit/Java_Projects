@@ -3,7 +3,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.regex.Matcher;
@@ -42,14 +41,13 @@ public class DataStructures {
             long x = 0,y=0;
             int count = 0;
             String nextLine="";
-             
-                do {
-                  try{ 
-                    nextLine = br.readLine();
-                      System.out.println(nextLine);
-                    Matcher n = q.matcher(nextLine);
-                    Matcher m = p.matcher(nextLine);
-                    Matcher o = r.matcher(nextLine);
+            
+            for(String Line; (Line = br.readLine()) != null; ) {
+                 // System.out.println(Line);
+                  
+                    Matcher n = q.matcher(Line);
+                    Matcher m = p.matcher(Line);
+                    Matcher o = r.matcher(Line);
                    // System.out.println(m.find()+" "+n.find()+" "+o.find());
                     if (m.find() && n.find() && o.find()) {
                        
@@ -65,15 +63,12 @@ public class DataStructures {
                        replaceString=replaceString.replaceAll(" -d ",",") ;
                        replaceString=replaceString.replaceAll(" -b " ,",") ;
                        replaceString=replaceString.replaceAll(" -eT ",",") ;
-                      // System.out.println(g);
+                       System.out.println(g);
                        out1.append(replaceString+"\n");
                        count++;
                        }
-                }
-                  catch(Exception e){
-                      System.out.println(e);}
-                } while ((nextLine = br.readLine()) != null);
-
+             }
+             
              //   sc.close();
              } catch(Exception e) {
                   throw new RuntimeException(e);
