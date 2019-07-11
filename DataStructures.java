@@ -1,6 +1,10 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -18,40 +22,57 @@ public class DataStructures {
        
         FileOutputStream fout = new FileOutputStream("C:\\Users\\Hp\\Desktop\\MyLog.txt"); 
         PrintStream out = new PrintStream(fout) ;
+        FileOutputStream fout1 = new FileOutputStream("C:\\Users\\Hp\\Documents\\XYZ.csv"); 
+        PrintStream out1 = new PrintStream(fout1) ;
+        out1.append("Time,Source,Destination,Bits,Energy\n");
         
         if ( !f.exists()) {
             System.err.println("file path not specified");
         }
         try {
-            String regex1 = "ENERGY:\\s(.*)";//"[0-9]+\|INFO\|MyHalfDuplexModem@[0-9]+:println\|ENERGY:";
+            String regex1 = "ENERGY:\\s(.*)";
             final Pattern p = Pattern.compile(regex1);
-            String regex2 = "[0-9]+";//"[0-9]+\|INFO\|MyHalfDuplexModem@[0-9]+:println\|ENERGY:";
+            String regex2 = "[0-9]+{13}";
             final Pattern q = Pattern.compile(regex2);
-            String regex3 = "-eT";//"[0-9]+\|INFO\|MyHalfDuplexModem@[0-9]+:println\|ENERGY:";
+            String regex3 = "-eT";
             final Pattern r = Pattern.compile(regex3);
             Scanner sc = new Scanner(f);
+            BufferedReader br = new BufferedReader(new FileReader(realPath)) ;
+            
             long x = 0,y=0;
             int count = 0;
+            String nextLine="";
              
-                while (sc.hasNextLine()) {
-                   
-                    String nextLine = sc.nextLine();
+                do {
+                  try{ 
+                    nextLine = br.readLine();
+                      System.out.println(nextLine);
                     Matcher n = q.matcher(nextLine);
                     Matcher m = p.matcher(nextLine);
                     Matcher o = r.matcher(nextLine);
-                    
+                   // System.out.println(m.find()+" "+n.find()+" "+o.find());
                     if (m.find() && n.find() && o.find()) {
-                       // System.out.println(n.group(0));
+                       
+                       
                        y = Long.parseLong(n.group(0));
                        if(count==0){
                            x = Long.parseLong(n.group(0));
                         }
-                       System.out.println((y-x)+" "+m.group(0)); // whole matched expression
-                       out.append((y-x)+" "+m.group(0)+"\n") ;
+                      // System.out.println((y-x)+" "+m.group(0)); // whole matched expression
+                       String g = (y-x)+" "+m.group(0);
+                       out.append(g+"\n") ;
+                       String replaceString=g.replaceAll(" ENERGY: -s ",",") ;
+                       replaceString=replaceString.replaceAll(" -d ",",") ;
+                       replaceString=replaceString.replaceAll(" -b " ,",") ;
+                       replaceString=replaceString.replaceAll(" -eT ",",") ;
+                      // System.out.println(g);
+                       out1.append(replaceString+"\n");
                        count++;
                        }
-                            
-                }  
+                }
+                  catch(Exception e){
+                      System.out.println(e);}
+                } while ((nextLine = br.readLine()) != null);
 
              //   sc.close();
              } catch(Exception e) {
